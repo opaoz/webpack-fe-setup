@@ -13,6 +13,39 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+
+const plugins = [
+    new ExtractTextPlugin({
+        filename: '[name].bundle.css',
+        allChunks: true,
+    }),
+    new InlineManifestWebpackPlugin({
+        name: 'webpackManifest'
+    }),
+    new HtmlWebpackPlugin({
+        template: 'index.html',
+        favicon: './images/favicon.ico',
+        minify: {
+            removeComments: true,
+            collapseWhitespace: true,
+            removeRedundantAttributes: true,
+            useShortDoctype: true,
+            removeEmptyAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            keepClosingSlash: true,
+            minifyJS: true,
+            minifyCSS: true,
+            minifyURLs: true,
+        },
+        hash: true,
+        inject: true
+    })
+];
+
+if (process.env.NODE_ENV === 'production') {
+    plugins.unshift(new UglifyJSPlugin());
+}
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
@@ -44,7 +77,12 @@ module.exports = {
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
-                        'css-loader',
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                minimize: true
+                            }
+                        },
                         'sass-loader'
                     ]
                 }),
@@ -58,31 +96,5 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new ExtractTextPlugin({
-            filename: '[name].bundle.css',
-            allChunks: true,
-        }),
-        new InlineManifestWebpackPlugin({
-            name: 'webpackManifest'
-        }),
-        new HtmlWebpackPlugin({
-            template: 'index.html',
-            favicon: './images/favicon.ico',
-            minify: {
-                removeComments: true,
-                collapseWhitespace: true,
-                removeRedundantAttributes: true,
-                useShortDoctype: true,
-                removeEmptyAttributes: true,
-                removeStyleLinkTypeAttributes: true,
-                keepClosingSlash: true,
-                minifyJS: true,
-                minifyCSS: true,
-                minifyURLs: true,
-            },
-            hash: true,
-            inject: true
-        }),
-    ],
+    plugins
 };
