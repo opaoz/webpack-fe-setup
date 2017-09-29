@@ -1,0 +1,14 @@
+{
+  "name": "fe_webpack_sample",
+  "version": "1.0.0",
+  "description": "Fe sample boilerplate using webpack",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^3.0.0"
+  }
+}
