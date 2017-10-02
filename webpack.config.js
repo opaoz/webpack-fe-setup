@@ -74,6 +74,7 @@ module.exports = {
             },
             {
                 test: /\.(sass|scss)$/,
+                // include: [/bower_components/],
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
@@ -91,8 +92,48 @@ module.exports = {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
                 loader: 'file-loader',
                 options: {
-                    name: '/[path][hash:base64:5].rimra[name].[ext]'
+                    name: '/[path][hash:base64:5].[name].[ext]'
                 }
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg|ico)$/,
+                loader: 'file-loader',
+                options: {
+                    name: '/[path][name].[ext]'
+                },
+                /*use: [
+                    /*{
+                      loader: 'file-loader',
+                        options: {
+                            name: '/[path][name].[ext]'
+                        }
+                    },
+                    {
+                        loader: 'image-webpack-loader',
+                        query: {
+                            gifsicle: {
+                                interlaced: false,
+                            },
+                            progressive: true,
+                            optimizationLevel: 7,
+                            interlaced: false,
+                            pngquant: {
+                                quality: '65-90',
+                                speed: 4,
+                            },
+                            svgo: {
+                                plugins: [
+                                    {
+                                        removeViewBox: false
+                                    },
+                                    {
+                                        removeEmptyAttrs: false
+                                    }
+                                ]
+                            }
+                        },
+                    },
+                    ],*/
             }
         ]
     },
